@@ -23,7 +23,7 @@ Term::Term(std::stringstream& is) {
     value = lhs.getValue();
 
     char c = is.get();
-    while ((c == '*') || (c == '/') || Factor::isFirstFactorChar(c)) {
+    while ((c == '*') || (c == '/') || (!(c == '-') && Factor::isFirstFactorChar(c))) {
         if (c == '*') {
             skipSpaces(is);
             Factor rhs(is);
@@ -43,10 +43,15 @@ Term::Term(std::stringstream& is) {
 }
 
 Expression::Expression(std::stringstream& is) {
-    Term lhs(is);
-    skipSpaces(is);
-
-    value = lhs.getValue();
+    char first = is.get();
+    is.unget();
+    if ((first == '+') || (first == '-')) {
+        value = 0;
+    } else {
+        Term lhs(is);
+        value = lhs.getValue();
+        skipSpaces(is);
+    }
 
     char c = is.get();
     while ((c == '+') || (c == '-')) {
