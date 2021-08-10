@@ -3,7 +3,7 @@
 
 Factor::Factor(std::stringstream& is) {
     char c = is.get();
-    if ((c >= '0') && (c <= '9')) {
+    if (Number::isFirstNumberChar(c)) {
         is.unget();
         Number num(is);
         value = num.getValue();
@@ -23,16 +23,16 @@ Term::Term(std::stringstream& is) {
     value = lhs.getValue();
 
     char c = is.get();
-    while ((c == '*') || (c == '/') || (c == '(')) {
+    while ((c == '*') || (c == '/') || Factor::isFirstFactorChar(c)) {
         if (c == '*') {
             skipSpaces(is);
-            Term rhs(is);
+            Factor rhs(is);
             value *= rhs.getValue();
         } else if (c == '/') {
             skipSpaces(is);
-            Term rhs(is);
+            Factor rhs(is);
             value /= rhs.getValue();
-        } else if (c == '(') {
+        } else if (Factor::isFirstFactorChar(c)) {
             is.unget();
             Factor rhs(is);
             value *= rhs.getValue();
@@ -52,11 +52,11 @@ Expression::Expression(std::stringstream& is) {
     while ((c == '+') || (c == '-')) {
         if (c == '+') {
             skipSpaces(is);
-            Expression rhs(is);
+            Term rhs(is);
             value += rhs.getValue();
         } else if (c == '-') {
             skipSpaces(is);
-            Expression rhs(is);
+            Term rhs(is);
             value -= rhs.getValue();
         }
         c = is.get();

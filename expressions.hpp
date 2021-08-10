@@ -16,11 +16,19 @@ public:
     Number(std::stringstream& is) {
         is >> value;
     }
+
+    static bool isFirstNumberChar(char c) {
+        return (c >= '0') && (c <= '9');
+    }
 };
 
 class Factor : public Valuable {
 public:
     Factor(std::stringstream& is);
+
+    static bool isFirstFactorChar(char c) {
+        return Number::isFirstNumberChar(c) || (c == '(');
+    }
 };
 
 class Term : public Valuable {
