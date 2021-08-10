@@ -1,0 +1,9 @@
+<expression> ::= <term> | <term> "+" <expression> | <term> "-" <expression>
+<term> ::= <factor> | <factor> "*" <term> | <factor> "/" <term> | <factor> <factor>
+<factor> ::= <number> | "(" <expression> ")"
+
+
+<number> ::= <integer> | <float>
+<integer> ::= <digit> | <integer> <digit>
+<digit> ::= [0-9]
+<float> ::= <integer> "." <integer>
